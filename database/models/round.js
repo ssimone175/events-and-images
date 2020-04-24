@@ -1,5 +1,5 @@
 module.exports = function (sequelize, DataTypes) {
-    const players = sequelize.define("players", {
+    const round = sequelize.define("round", {
         idRound: {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV1,
@@ -19,15 +19,15 @@ module.exports = function (sequelize, DataTypes) {
         // },
     },{
         freezeTableName: true,
-        tableName: 'players',
+        tableName: 'round',
         timestamps: true
     });
 
-    players.sync().then(function() {
-        console.log('Player Table created successfully');
+    round.sync().then(function() {
+        console.log('Round Table created successfully');
     }, function(err) {
         console.error('An error occurred while creating table : ' + err.stack);
     });
 
-    return players;
+    return round;
 };

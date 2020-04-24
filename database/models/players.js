@@ -27,7 +27,7 @@ module.exports = function (sequelize, DataTypes) {
         },
         activePlayer:{
           type:DataTypes.BOOLEAN,
-          defaultValue:false
+          defaultValue: 0
         },
         saveName: {
             type: DataTypes.STRING,

@@ -12,12 +12,13 @@ const sequelize = new Sequelize('game','root', 'mhallacht', {
 var players = sequelize.import('../database/models/players');
 var cardsInMiddle = sequelize.import('../database/models/cardsInMiddle');
 var usedCards = sequelize.import('../database/models/usedCards');
+var round = sequelize.import('../database/models/round');
 
 sequelize.authenticate().then(function (err) {
     if (err) {
-        console.error('PLAYERS SEQUELIZE: Connection Error' + err);
+        console.error('SAVE SEQUELIZE: Connection Error' + err);
     } else {
-        console.log('PLAYERS SEQUELIZE: Successfully connected');
+        console.log('SAVE SEQUELIZE: Successfully connected');
     }
 });
 
@@ -41,10 +42,17 @@ router.get('/used', function (req, res, next) {
     })
 });
 
+router.get('/round', function (req, res, next) {
+    round.findAll({attributes: ['idRound', 'value']}).then(function (round) {
+        res.json({round: round});
+    })
+});
+
 router.delete('/delete', function (req, res, next) {
     players.destroy({truncate:true});
     cardsInMiddle.destroy({truncate:true});
     usedCards.destroy({truncate:true});
+    round.destroy({truncate:true});
     res.json({info: ("everything deleted")});
 });
 
@@ -56,8 +64,7 @@ router.post('/new', function (req, res, next) {
     var playerCardTwo = req.body.playerCardTwo || '';
     var playerCardThree  = req.body.playerCardThree || '';
     var playerCardFour  = req.body.playerCardFour || '';
-    var activePlayer = req.body.activePlayer || '';
-    console.log(activePlayer);
+    var activePlayer = req.body.activePlayer || 0;
 
     var newPlayer = players.build({
         playerName: playerName,
@@ -102,7 +109,19 @@ router.post('/newUsed', function (req, res, next) {
     res.json({"info": "Used Card gespeichert"});
 });
 
+router.post('/newRound', function (req, res, next) {
+    console.log(req.body);
+    var roundValue = req.body.value;
 
+    var newRound = round.build({
+        value: roundValue,
+    });
+
+    newRound.save().catch(function (error) {
+        console.log('Error while inserting: ' + error.stack);
+    });
+    res.json({"info": "Runde gespeichert"});
+});
 // router.put('/edit/:idCat', function (req, res, next) {
 //     console.log(req.params);
 //     var playerId = req.params.idPlayer || '';
