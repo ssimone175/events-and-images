@@ -29,6 +29,10 @@ module.exports = function (sequelize, DataTypes) {
           type:DataTypes.BOOLEAN,
           defaultValue: 0
         },
+        playerRole: {
+            type: DataTypes.STRING,
+            defaultValue: ''
+        },
         saveName: {
             type: DataTypes.STRING,
             defaultValue: ''
