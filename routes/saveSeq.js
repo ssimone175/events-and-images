@@ -25,7 +25,7 @@ sequelize.authenticate().then(function (err) {
 
 
 router.get('/players', function (req, res, next) {
-    players.findAll({attributes: ['idPlayer', 'playerName', 'playerCardOne', 'playerCardTwo','playerCardThree', 'playerCardFour', 'activePlayer', 'playerRole']}).then(function (players) {
+    players.findAll({attributes: ['idPlayer', 'playerName', 'playerCardOne', 'playerCardTwo','playerCardThree', 'playerCardFour', 'playerCardFive', 'activePlayer', 'playerRole']}).then(function (players) {
         res.json({players: players});
     })
 });
@@ -64,6 +64,7 @@ router.post('/new', function (req, res, next) {
     var playerCardTwo = req.body.playerCardTwo || '';
     var playerCardThree  = req.body.playerCardThree || '';
     var playerCardFour  = req.body.playerCardFour || '';
+    var playerCardFive  = req.body.playerCardFive || '';
     var activePlayer = req.body.activePlayer || 0;
     var playerRole = req.body.playerRole || 0;
 
@@ -73,6 +74,7 @@ router.post('/new', function (req, res, next) {
         playerCardTwo: playerCardTwo,
         playerCardThree: playerCardThree,
         playerCardFour: playerCardFour,
+        playerCardFive: playerCardFive,
         activePlayer:activePlayer,
         playerRole: playerRole,
     });

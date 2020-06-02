@@ -25,6 +25,10 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING,
             defaultValue: ''
         },
+        playerCardFive: {
+            type: DataTypes.STRING,
+            defaultValue: ''
+        },
         activePlayer:{
           type:DataTypes.BOOLEAN,
           defaultValue: 0
