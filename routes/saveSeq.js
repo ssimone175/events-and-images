@@ -23,6 +23,45 @@ sequelize.authenticate().then(function (err) {
 });
 
 
+router.get('/all', function (req, res, next) {
+    players.findAll({attributes: ['idPlayer', 'playerName', 'playerCardOne', 'playerCardTwo','playerCardThree', 'playerCardFour', 'playerCardFive', 'activePlayer', 'playerRole']}).then(function (players){
+      cardsInMiddle.findAll({attributes: ['idCard', 'value']}).then(function (cardsInMiddle){
+        usedCards.findAll({attributes: ['idCard', 'value']}).then(function (usedCards){
+          round.findAll({attributes: ['idRound', 'value']}).then(function (round) {
+              res.json({players: players, cardsInMiddle: cardsInMiddle, usedCards:usedCards, round: round});
+          });
+        });
+      });
+    });
+
+});
+router.post('/save-all', function (req, res, next) {
+    console.log(req.body)
+      var playerName = item.playerName || '';
+      var playerCardOne = item.playerCardOne || '';
+      var playerCardTwo = item.playerCardTwo || '';
+      var playerCardThree  = item.playerCardThree || '';
+      var playerCardFour  = item.playerCardFour || '';
+      var playerCardFive  = item.playerCardFive || '';
+      var activePlayer = item.activePlayer || 0;
+      var playerRole = item.playerRole || 0;
+
+    var newPlayer = players.build({
+        playerName: playerName,
+        playerCardOne: playerCardOne,
+        playerCardTwo: playerCardTwo,
+        playerCardThree: playerCardThree,
+        playerCardFour: playerCardFour,
+        playerCardFive: playerCardFive,
+        activePlayer:activePlayer,
+        playerRole: playerRole,
+    });
+
+    newPlayer.save().catch(function (error) {
+        console.log('Error while inserting: ' + error.stack);
+    });
+    res.json({"info": "Player gespeichert"});
+});
 
 router.get('/players', function (req, res, next) {
     players.findAll({attributes: ['idPlayer', 'playerName', 'playerCardOne', 'playerCardTwo','playerCardThree', 'playerCardFour', 'playerCardFive', 'activePlayer', 'playerRole']}).then(function (players) {
