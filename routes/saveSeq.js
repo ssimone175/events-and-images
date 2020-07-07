@@ -23,7 +23,7 @@ sequelize.authenticate().then(function (err) {
 });
 
 
-router.get('/all', function (req, res, next) {
+router.get('/save-games', function (req, res, next) {
     players.findAll({attributes: ['idPlayer', 'playerName', 'playerCardOne', 'playerCardTwo','playerCardThree', 'playerCardFour', 'playerCardFive', 'activePlayer', 'playerRole']}).then(function (players){
       cardsInMiddle.findAll({attributes: ['idCard', 'value']}).then(function (cardsInMiddle){
         usedCards.findAll({attributes: ['idCard', 'value']}).then(function (usedCards){
@@ -35,68 +35,34 @@ router.get('/all', function (req, res, next) {
     });
 
 });
-router.post('/save-all', function (req, res, next) {
-    console.log(req.body)
-      var playerName = item.playerName || '';
-      var playerCardOne = item.playerCardOne || '';
-      var playerCardTwo = item.playerCardTwo || '';
-      var playerCardThree  = item.playerCardThree || '';
-      var playerCardFour  = item.playerCardFour || '';
-      var playerCardFive  = item.playerCardFive || '';
-      var activePlayer = item.activePlayer || 0;
-      var playerRole = item.playerRole || 0;
-
-    var newPlayer = players.build({
-        playerName: playerName,
-        playerCardOne: playerCardOne,
-        playerCardTwo: playerCardTwo,
-        playerCardThree: playerCardThree,
-        playerCardFour: playerCardFour,
-        playerCardFive: playerCardFive,
-        activePlayer:activePlayer,
-        playerRole: playerRole,
-    });
-
-    newPlayer.save().catch(function (error) {
-        console.log('Error while inserting: ' + error.stack);
-    });
-    res.json({"info": "Player gespeichert"});
-});
-
-router.get('/players', function (req, res, next) {
-    players.findAll({attributes: ['idPlayer', 'playerName', 'playerCardOne', 'playerCardTwo','playerCardThree', 'playerCardFour', 'playerCardFive', 'activePlayer', 'playerRole']}).then(function (players) {
-        res.json({players: players});
-    })
-});
-
-router.get('/middle', function (req, res, next) {
-    cardsInMiddle.findAll({attributes: ['idCard', 'value']}).then(function (cardsInMiddle) {
-        res.json({cardsInMiddle: cardsInMiddle});
-    })
-});
-
-router.get('/used', function (req, res, next) {
-    usedCards.findAll({attributes: ['idCard', 'value']}).then(function (usedCards) {
-        res.json({usedCards: usedCards});
-    })
-});
-
-router.get('/round', function (req, res, next) {
-    round.findAll({attributes: ['idRound', 'value']}).then(function (round) {
-        res.json({round: round});
-    })
-});
-
-router.delete('/delete', function (req, res, next) {
-    players.destroy({truncate:true});
-    cardsInMiddle.destroy({truncate:true});
-    usedCards.destroy({truncate:true});
-    round.destroy({truncate:true});
-    res.json({info: ("everything deleted")});
-});
-
-
-router.post('/new', function (req, res, next) {
+router.post('/save-games', function (req, res, next) {
+    // console.log(req.body);
+    // req.body.players.forEach((item, i) => {
+    //     var playerName = item.playerName || '';
+    //     var playerCardOne = item.playerCardOne || '';
+    //     var playerCardTwo = item.playerCardTwo || '';
+    //     var playerCardThree  = item.playerCardThree || '';
+    //     var playerCardFour  = item.playerCardFour || '';
+    //     var playerCardFive  = item.playerCardFive || '';
+    //     var activePlayer = item.activePlayer || 0;
+    //     var playerRole = item.playerRole || 0;
+    //
+    //   var newPlayer = players.build({
+    //       playerName: playerName,
+    //       playerCardOne: playerCardOne,
+    //       playerCardTwo: playerCardTwo,
+    //       playerCardThree: playerCardThree,
+    //       playerCardFour: playerCardFour,
+    //       playerCardFive: playerCardFive,
+    //       activePlayer:activePlayer,
+    //       playerRole: playerRole,
+    //   });
+    //
+    //   newPlayer.save().catch(function (error) {
+    //       console.log('Error while inserting: ' + error.stack);
+    //   });
+    //   res.json({"info": "Player gespeichert"});
+    // });
     console.log(req.body)
     var playerName = req.body.playerName || '';
     var playerCardOne = req.body.playerCardOne || '';
@@ -124,7 +90,68 @@ router.post('/new', function (req, res, next) {
     res.json({"info": "Player gespeichert"});
 });
 
-router.post('/newMiddle', function (req, res, next) {
+router.get('/players', function (req, res, next) {
+    players.findAll({attributes: ['idPlayer', 'playerName', 'playerCardOne', 'playerCardTwo','playerCardThree', 'playerCardFour', 'playerCardFive', 'activePlayer', 'playerRole']}).then(function (players) {
+        res.json({players: players});
+    })
+});
+
+router.get('/middleCards', function (req, res, next) {
+    cardsInMiddle.findAll({attributes: ['idCard', 'value']}).then(function (cardsInMiddle) {
+        res.json({cardsInMiddle: cardsInMiddle});
+    })
+});
+
+router.get('/usedCards', function (req, res, next) {
+    usedCards.findAll({attributes: ['idCard', 'value']}).then(function (usedCards) {
+        res.json({usedCards: usedCards});
+    })
+});
+
+router.get('/rounds', function (req, res, next) {
+    round.findAll({attributes: ['idRound', 'value']}).then(function (round) {
+        res.json({round: round});
+    })
+});
+
+router.delete('/save-games', function (req, res, next) {
+    players.destroy({truncate:true});
+    cardsInMiddle.destroy({truncate:true});
+    usedCards.destroy({truncate:true});
+    round.destroy({truncate:true});
+    res.json({info: ("everything deleted")});
+});
+
+
+router.post('/players', function (req, res, next) {
+    console.log(req.body)
+    var playerName = req.body.playerName || '';
+    var playerCardOne = req.body.playerCardOne || '';
+    var playerCardTwo = req.body.playerCardTwo || '';
+    var playerCardThree  = req.body.playerCardThree || '';
+    var playerCardFour  = req.body.playerCardFour || '';
+    var playerCardFive  = req.body.playerCardFive || '';
+    var activePlayer = req.body.activePlayer || 0;
+    var playerRole = req.body.playerRole || 0;
+
+    var newPlayer = players.build({
+        playerName: playerName,
+        playerCardOne: playerCardOne,
+        playerCardTwo: playerCardTwo,
+        playerCardThree: playerCardThree,
+        playerCardFour: playerCardFour,
+        playerCardFive: playerCardFive,
+        activePlayer:activePlayer,
+        playerRole: playerRole,
+    });
+
+    newPlayer.save().catch(function (error) {
+        console.log('Error while inserting: ' + error.stack);
+    });
+    res.json({"info": "Player gespeichert"});
+});
+
+router.post('/middle-cards', function (req, res, next) {
     console.log(req.body)
     var cardValue = req.body.value || '';
 
@@ -138,7 +165,7 @@ router.post('/newMiddle', function (req, res, next) {
     res.json({"info": "Middle Card gespeichert"});
 });
 
-router.post('/newUsed', function (req, res, next) {
+router.post('/used-cards', function (req, res, next) {
     console.log(req.body)
     var cardValue = req.body.value || '';
 
@@ -152,7 +179,7 @@ router.post('/newUsed', function (req, res, next) {
     res.json({"info": "Used Card gespeichert"});
 });
 
-router.post('/newRound', function (req, res, next) {
+router.post('/rounds', function (req, res, next) {
     console.log(req.body);
     var roundValue = req.body.value;
 

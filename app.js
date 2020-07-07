@@ -55,7 +55,7 @@ app.use(passport.session());
 /*app.use('/login', login);
 app.use('/logout', logout);
 app.use('/secret', secret);*/
-app.use('/save', save);
+app.use('/', save);
 //app.use('/locations', locations);
 //app.use('/catssimple', catsSimple);
 
