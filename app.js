@@ -1,6 +1,5 @@
 var express = require('express');
 var path = require('path');
-var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -11,15 +10,7 @@ var session = require('express-session');
 var cors = require('cors')
 
 
-// bneu eingefügte Route info
-/*var secret = require('./routes/secret');
-var info = require('./routes/info');
-var login = require('./routes/login');
-var logout = require('./routes/logout');*/
-var save = require('./routes/saveSeq');
-//var locations = require('./routes/locationsSeq');
-//var catsSimple = require('./routes/cats')
-//var team = require('./routes/team');
+var events = require('./routes/events');
 
 var app = express();
 
@@ -37,7 +28,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors())
 
-// Die Route info mit  routes/info.js "verarbeiten"
 
 
 // Cookies erlauben
@@ -50,16 +40,7 @@ app.use(session({ cookie: { maxAge: 60000},
 app.use(passport.initialize());
 app.use(passport.session());
 
-//app.use('/info', info);
-// login / Logout
-/*app.use('/login', login);
-app.use('/logout', logout);
-app.use('/secret', secret);*/
-app.use('/', save);
-//app.use('/locations', locations);
-//app.use('/catssimple', catsSimple);
-
-//app.use('/team',team);
+app.use('/', events);
 
 
 
@@ -82,7 +63,7 @@ app.use(function(err, req, res, next) {
 });
 
 // so kann die App mit node app.js gestartet werden. Der Server läuft ab hier.
-var port = 3000;
+var port = 3030;
 app.listen(port, function () {
   console.log('app listening on port ' + port);
 });
